@@ -573,6 +573,24 @@ class ClusteringEngine:
 
         return fcluster(Z, t=avg_clusters, criterion='maxclust') - 1
 
+    def predict_labels(self, data: np.ndarray) -> np.ndarray:
+        """
+        Predict cluster labels for new data points.
+
+        Uses the fitted KMeans model to predict labels for unseen data.
+
+        Args:
+            data: New data to predict labels for
+
+        Returns:
+            Predicted cluster labels
+        """
+        if self.kmeans_model is None:
+            raise ValueError("KMeans model not fitted. Ensure 'kmeans' is in algorithms when calling fit().")
+
+        data_scaled = self.scaler.transform(data)
+        return self.kmeans_model.predict(data_scaled)
+
     def get_result(self, algorithm: str) -> ClusterResult:
         """Get clustering result for a specific algorithm."""
         if algorithm not in self.results:

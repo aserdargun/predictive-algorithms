@@ -216,9 +216,9 @@ def main():
         fig5.savefig('timeseries_anomalies.png', dpi=150, bbox_inches='tight')
         print("   Saved: timeseries_anomalies.png")
 
-        # Cluster comparison
+        # Cluster comparison (use training data since cluster labels are from training)
         fig6 = viz.plot_cluster_comparison(
-            test_data,
+            train_data,
             pm_tool.clustering_engine.get_all_results(),
             feature_x=0, feature_y=1
         )

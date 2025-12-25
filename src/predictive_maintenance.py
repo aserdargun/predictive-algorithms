@@ -48,20 +48,31 @@ class MaintenanceReport:
 
     def to_dict(self) -> Dict:
         """Convert report to dictionary."""
+        def convert_numpy(obj):
+            """Convert numpy types to Python native types."""
+            if isinstance(obj, np.integer):
+                return int(obj)
+            elif isinstance(obj, np.floating):
+                return float(obj)
+            elif isinstance(obj, np.ndarray):
+                return obj.tolist()
+            elif isinstance(obj, dict):
+                return {k: convert_numpy(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_numpy(v) for v in obj]
+            return obj
+
         return {
             'timestamp': self.timestamp,
-            'n_samples': self.n_samples,
-            'n_features': self.n_features,
+            'n_samples': int(self.n_samples),
+            'n_features': int(self.n_features),
             'feature_names': self.feature_names,
             'overall_model_residual': float(self.overall_model_residual),
             'omr_category': self.omr_category,
             'anomaly_rate': float(self.anomaly_rate),
-            'clustering_summary': self.clustering_summary,
+            'clustering_summary': convert_numpy(self.clustering_summary),
             'best_clustering_algorithm': self.best_clustering_algorithm,
-            'residual_summary': {
-                k: float(v) if isinstance(v, (np.floating, float)) else v
-                for k, v in self.residual_summary.items()
-            },
+            'residual_summary': convert_numpy(self.residual_summary),
             'top_contributing_factors': [
                 (name, float(score)) for name, score in self.top_contributing_factors
             ]
@@ -219,8 +230,8 @@ class PredictiveMaintenanceTool:
 
         data = self._validate_data(data)
 
-        # Get cluster labels from ensemble
-        cluster_labels = self.clustering_engine.get_ensemble_labels()
+        # Get cluster labels for the new data
+        cluster_labels = self.clustering_engine.predict_labels(data)
 
         # Calculate residuals
         residual_result = self.residual_calculator.calculate_residuals(
@@ -345,7 +356,7 @@ class PredictiveMaintenanceTool:
             raise ValueError("Model not fitted. Call fit() first.")
 
         data = self._validate_data(data)
-        cluster_labels = self.clustering_engine.get_ensemble_labels()
+        cluster_labels = self.clustering_engine.predict_labels(data)
         result = self.residual_calculator.calculate_residuals(data, cluster_labels)
 
         return result.anomaly_scores
@@ -361,7 +372,7 @@ class PredictiveMaintenanceTool:
             raise ValueError("Model not fitted. Call fit() first.")
 
         data = self._validate_data(data)
-        cluster_labels = self.clustering_engine.get_ensemble_labels()
+        cluster_labels = self.clustering_engine.predict_labels(data)
         result = self.residual_calculator.calculate_residuals(data, cluster_labels)
 
         return result.point_residuals, result.overall_model_residual

@@ -1,0 +1,104 @@
+{
+  "timestamp": "2025-12-25T19:05:00.943393",
+  "n_samples": 150,
+  "n_features": 10,
+  "feature_names": [
+    "Temperature",
+    "Pressure",
+    "Vibration",
+    "Flow_Rate",
+    "RPM",
+    "Current",
+    "Voltage",
+    "Oil_Level",
+    "Humidity",
+    "Ambient_Temp"
+  ],
+  "overall_model_residual": 2.009576496820825,
+  "omr_category": "High",
+  "anomaly_rate": 0.04,
+  "clustering_summary": {
+    "kmeans": {
+      "n_clusters": 4,
+      "n_noise_points": 0,
+      "silhouette_score": 0.21443876964747305,
+      "parameters": {
+        "n_clusters": 4
+      }
+    },
+    "dbscan": {
+      "n_clusters": 1,
+      "n_noise_points": 118,
+      "silhouette_score": null,
+      "parameters": {
+        "eps": 1.6026520088036404,
+        "min_samples": 20
+      }
+    },
+    "optics": {
+      "n_clusters": 1,
+      "n_noise_points": 0,
+      "silhouette_score": null,
+      "parameters": {
+        "min_samples": 20,
+        "xi": 0.05
+      }
+    },
+    "som": {
+      "n_clusters": 16,
+      "n_noise_points": 0,
+      "silhouette_score": 0.18617549823896698,
+      "parameters": {
+        "grid_size": [
+          4,
+          4
+        ],
+        "n_iterations": 1000
+      }
+    },
+    "lsh": {
+      "n_clusters": 1,
+      "n_noise_points": 0,
+      "silhouette_score": null,
+      "parameters": {
+        "n_hash_tables": 10,
+        "n_hash_functions": 8
+      }
+    }
+  },
+  "best_clustering_algorithm": "kmeans",
+  "residual_summary": {
+    "mean_residual": 1.0377800468606304,
+    "std_residual": 1.0010912811904693,
+    "max_residual": 7.854510012963806,
+    "min_residual": 0.27308221630680285,
+    "threshold_low": 2.5394169686463344,
+    "threshold_medium": 3.5405082498368037,
+    "threshold_high": 5.723391959264062,
+    "n_low_anomalies": 2,
+    "n_medium_anomalies": 2,
+    "n_high_anomalies": 2
+  },
+  "top_contributing_factors": [
+    [
+      "Oil_Level",
+      12.422153216824842
+    ],
+    [
+      "RPM",
+      12.249121815522159
+    ],
+    [
+      "Ambient_Temp",
+      10.69894215811065
+    ],
+    [
+      "Temperature",
+      10.447056982301808
+    ],
+    [
+      "Humidity",
+      9.692599558297681
+    ]
+  ]
+}
