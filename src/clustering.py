@@ -270,6 +270,7 @@ class ClusteringEngine:
         self.results: Dict[str, ClusterResult] = {}
         self.data_scaled: Optional[np.ndarray] = None
         self.data_original: Optional[np.ndarray] = None
+        self.kmeans_model: Optional[KMeans] = None
 
     def fit(self, data: np.ndarray,
             algorithms: Optional[List[str]] = None,
@@ -320,6 +321,7 @@ class ClusteringEngine:
             n_init=10
         )
         labels = model.fit_predict(self.data_scaled)
+        self.kmeans_model = model
 
         self.results['kmeans'] = ClusterResult(
             algorithm='kmeans',
